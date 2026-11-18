@@ -1,1 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CROWS — Leadership Structure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
 
+    /* ==========================================================================
+       CROWS GOTHIC NOCTURNAL DESIGN TOKENS
+       ========================================================================== */
+    :root {
+      --bg-obsidian: #0b0910;
+      --bg-twilight-deep: #181124;
+      --bg-twilight-mid: #241936;
+      --card-surface: rgba(19, 14, 30, 0.94);
+      --card-recess: rgba(12, 9, 20, 0.96);
+      --border-violet: #3f3159;
+      --border-violet-inner: #271e38;
+      --border-violet-hover: #8d74bd;
+      --gold-ledger: #d4af5a;
+      --gold-bright: #e8c674;
+      --gold-dim: rgba(212, 175, 90, 0.38);
+      --purple-stem: #8266c2;
+      --crimson-note: #c25959;
+      --text-silver: #d8d2e3;
+      --text-lavender: #9b87bd;
+      --text-muted: #7c6d99;
+      --font-crest: 'Cinzel Decorative', 'Cinzel', Georgia, serif;
+      --font-gothic: 'Cinzel', Georgia, serif;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background-color: var(--bg-obsidian);
+      background-image:
+        radial-gradient(ellipse 85% 42% at 50% 0%, rgba(56, 39, 87, 0.45) 0%, transparent 72%),
+        linear-gradient(180deg, var(--bg-twilight-deep) 0%, var(--bg-obsidian) 45%, #07060b 100%);
+      color: var(--text-silver);
+      font-family: var(--font-ui);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==========================================================================
+       COMPACT TOP CONTROL BAR (OUTSIDE #chart-export-root)
+       ========================================================================== */
+    .control-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(13, 10, 21, 0.96);
+      border-bottom: 1px solid var(--border-violet);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.72);
+    }
+
+    .ctrl-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ctrl-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border-violet);
+      margin: 0 4px;
+    }
+
+    .ctrl-btn {
+      appearance: none;
+      border: 1px solid var(--border-violet);
+      background: rgba(24, 17, 36, 0.9);
+      color: var(--text-silver);
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .ctrl-btn:hover {
+      border-color: var(--border-violet-hover);
+      background: rgba(36, 25, 54, 0.98);
+      color: #ffffff;
+    }
+
+    .ctrl-btn.active {
+      border-color: var(--gold-ledger);
+      background: rgba(212, 175, 90, 0.16);
+      color: var(--gold-bright);
+      box-shadow: 0 0 12px rgba(212, 175, 90, 0.2);
+    }
+
+    .ctrl-btn.export-btn {
+      border-color: rgba(212, 175, 90, 0.65);
+      background: linear-gradient(180deg, rgba(212, 175, 90, 0.22) 0%, rgba(212, 175, 90, 0.1) 100%);
+      color: var(--gold-bright);
+    }
+
+    .ctrl-btn.export-btn:hover {
+      border-color: var(--gold-bright);
+      background: rgba(212, 175, 90, 0.28);
+      box-shadow: 0 0 14px rgba(212, 175, 90, 0.28);
+    }
+
+    .sig-input-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      background: rgba(24, 17, 36, 0.85);
+      border: 1px solid var(--border-violet);
+      border-radius: 8px;
+    }
+
+    .sig-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-lavender);
+    }
+
+    .sig-input {
+      width: 48px;
+      padding: 4px 6px;
+      border-radius: 6px;
+      border: 1px solid var(--border-violet);
+      background: #0b0910;
+      color: var(--gold-bright);
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+    }
+
+    .sig-input:focus {
+      border-color: var(--gold-ledger);
+      box-shadow: 0 0 0 2px rgba(212, 175, 90, 0.22);
+    }
+
+    .sig-list-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-lavender);
+      text-decoration: none;
+      padding: 5px 8px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      transition: color 0.16s ease, border-color 0.16s ease;
+    }
+
+    .sig-list-link:hover {
+      color: var(--gold-bright);
+      border-color: rgba(212, 175, 90, 0.35);
+    }
+
+    .copy-status {
+      font-size: 12px;
+      font-weight: 700;
+      color: #8ce09b;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .copy-status.visible {
+      opacity: 1;
+    }
+
+    /* ==========================================================================
+       HORIZONTAL SCROLL WRAPPER & CHART CANVAS
+       ========================================================================== */
+    .chart-scroll {
+      width: 100%;
+      overflow-x: auto;
+      padding: 24px 16px 40px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .chart-box {
+      position: relative;
+      min-width: 1120px;
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 36px 28px 34px;
+      background:
+        radial-gradient(ellipse 75% 32% at 50% 0%, rgba(58, 41, 88, 0.34) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(24, 17, 36, 0.92) 0%, rgba(11, 9, 16, 0.98) 55%, #09070e 100%);
+      border: 1px solid var(--border-violet);
+      border-radius: 18px;
+      box-shadow:
+        inset 0 0 0 1px var(--border-violet-inner),
+        0 20px 60px rgba(0, 0, 0, 0.85);
+      overflow: hidden;
+    }
+
+    /* Subtle Moonlit Gothic Spires & Crow Backdrop SVG */
+    .gothic-backdrop-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 290px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+    }
+
+    .chart-header,
+    .top-tier,
+    .high-council-section,
+    .gold-bus-grid,
+    .leads-grid,
+    .purple-stems-grid,
+    .departments-grid,
+    .chart-footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ==========================================================================
+       1. GOTHIC CREST HEADER & MOTTO
+       ========================================================================== */
+    .chart-header {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .crest-title-row {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .crow-emblem {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8));
+    }
+
+    .faction-title {
+      font-family: var(--font-crest);
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      line-height: 1.05;
+      color: var(--text-silver);
+      text-shadow:
+        0 2px 14px rgba(155, 135, 189, 0.35),
+        0 4px 10px rgba(0, 0, 0, 0.9);
+    }
+
+    .chart-subtitle {
+      font-family: var(--font-gothic);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      color: var(--gold-ledger);
+      margin-top: 6px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+    }
+
+    .filigree-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      max-width: 560px;
+      margin: 12px auto 10px;
+    }
+
+    .filigree-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--gold-ledger) 50%, transparent 100%);
+    }
+
+    .filigree-diamonds {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-ledger);
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .filigree-diamonds .center-diamond {
+      font-size: 14px;
+      color: var(--gold-bright);
+    }
+
+    .faction-motto {
+      font-family: var(--font-gothic);
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-lavender);
+    }
+
+    .faction-motto span {
+      color: var(--text-silver);
+    }
+
+    /* ==========================================================================
+       SHARED GOTHIC CARD STYLING & TORN SIGNATURE LINKS
+       ========================================================================== */
+    .gothic-card {
+      background: var(--card-surface);
+      border: 1.5px solid var(--border-violet);
+      border-radius: 12px;
+      box-shadow:
+        inset 0 0 0 1px var(--border-violet-inner),
+        0 8px 22px rgba(0, 0, 0, 0.65);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    }
+
+    .gothic-card:hover {
+      border-color: var(--border-violet-hover);
+      box-shadow:
+        inset 0 0 0 1px rgba(155, 135, 189, 0.25),
+        0 10px 26px rgba(0, 0, 0, 0.78);
+    }
+
+    .role-heading {
+      font-family: var(--font-gothic);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--gold-ledger);
+      text-transform: uppercase;
+    }
+
+    /* Clickable Torn Member Anchor */
+    .member-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border-radius: 8px;
+      padding: 2px;
+      max-width: 100%;
+      transition: transform 0.16s ease, filter 0.16s ease;
+    }
+
+    .member-link:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
+
+    .torn-sig {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid rgba(155, 135, 189, 0.32);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Engraved Gothic Nameplate Fallback (and Nameplates-Only Mode) */
+    .nameplate-fallback {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 6px 12px;
+      min-height: 34px;
+      max-width: 100%;
+      background: linear-gradient(180deg, rgba(36, 25, 54, 0.96) 0%, rgba(16, 12, 26, 0.98) 100%);
+      border: 1px solid rgba(212, 175, 90, 0.48);
+      border-radius: 8px;
+      box-shadow: inset 0 0 0 1px rgba(155, 135, 189, 0.16), 0 3px 10px rgba(0, 0, 0, 0.55);
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .member-link:hover .nameplate-fallback {
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 12px rgba(212, 175, 90, 0.32);
+    }
+
+    .np-name {
+      font-family: var(--font-gothic);
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text-silver);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .np-id {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gold-ledger);
+      background: rgba(212, 175, 90, 0.12);
+      border: 1px solid rgba(212, 175, 90, 0.35);
+      border-radius: 999px;
+      padding: 1px 6px;
+      flex-shrink: 0;
+    }
+
+    .member-link:hover .np-id {
+      background: var(--gold-bright);
+      color: #0b0910;
+      border-color: var(--gold-bright);
+    }
+
+    /* Nameplates-Only Mode Overrides */
+    #chart-export-root[data-mode="nameplate"] .torn-sig {
+      display: none !important;
+    }
+
+    #chart-export-root[data-mode="nameplate"] .nameplate-fallback {
+      display: inline-flex !important;
+    }
+
+    #chart-export-root[data-mode="nameplate"] .command-card .nameplate-fallback {
+      padding: 9px 22px;
+      min-height: 44px;
+    }
+
+    #chart-export-root[data-mode="nameplate"] .command-card .np-name {
+      font-size: 17px;
+    }
+
+    /* ==========================================================================
+       2. TOP TIER: LEADER, CO-LEADER & COUNCIL ADVISORS
+       ========================================================================== */
+    .top-tier {
+      display: grid;
+      grid-template-columns: 1fr 430px 1fr;
+      align-items: start;
+      gap: 16px;
+    }
+
+    .command-stack {
+      grid-column: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .command-card {
+      width: 430px;
+      max-width: 100%;
+      padding: 12px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border-color: rgba(212, 175, 90, 0.62);
+    }
+
+    .command-card .torn-sig {
+      max-width: 396px;
+    }
+
+    /* Vertical Gold Connector with Diamond Node */
+    .gold-v-connector {
+      position: relative;
+      width: 2px;
+      background: var(--gold-ledger);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gold-v-connector.between-leaders {
+      height: 28px;
+    }
+
+    .gold-v-connector.to-high-council {
+      height: 26px;
+    }
+
+    .diamond-node {
+      color: var(--gold-bright);
+      background: var(--bg-obsidian);
+      font-size: 11px;
+      line-height: 1;
+      padding: 1px 2px;
+      border-radius: 50%;
+      text-shadow: 0 0 8px rgba(212, 175, 90, 0.65);
+    }
+
+    /* Floating Right Card: Council Advisors */
+    .advisors-slot {
+      grid-column: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-self: center;
+      margin-top: 76px;
+      width: 248px;
+    }
+
+    .advisors-card {
+      width: 100%;
+      padding: 11px 12px 13px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      border-color: rgba(212, 175, 90, 0.45);
+    }
+
+    .advisors-rule {
+      width: 82%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--border-violet-hover) 50%, transparent 100%);
+    }
+
+    .advisors-members {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .advisors-drop-line {
+      position: relative;
+      width: 2px;
+      height: 62px;
+      background: var(--gold-ledger);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ==========================================================================
+       3. HIGH COUNCIL BAR
+       ========================================================================== */
+    .high-council-section {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .high-council-bar {
+      grid-column: 2 / 7;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      border-color: rgba(212, 175, 90, 0.72);
+      background: linear-gradient(180deg, rgba(36, 25, 54, 0.96) 0%, rgba(19, 14, 30, 0.98) 100%);
+    }
+
+    .hc-title {
+      font-family: var(--font-gothic);
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      color: var(--gold-bright);
+    }
+
+    .hc-gem {
+      font-size: 12px;
+      color: var(--gold-ledger);
+    }
+
+    /* ==========================================================================
+       GOLD 7-BRANCH BUS BAR WITH ◆ JUNCTION NODES
+       ========================================================================== */
+    .gold-bus-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 12px;
+      height: 44px;
+    }
+
+    .bus-col {
+      position: relative;
+      height: 100%;
+    }
+
+    /* Top center stem dropping from High Council onto horizontal bus (Col 4) */
+    .bus-col.center-trunk::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 20px;
+      background: var(--gold-ledger);
+    }
+
+    /* Horizontal gold bus line at y = 20px */
+    .bus-horizontal {
+      position: absolute;
+      top: 20px;
+      height: 2px;
+      background: var(--gold-ledger);
+    }
+
+    /* First column spans from center (50%) rightwards across gap */
+    .bus-horizontal.first {
+      left: 50%;
+      right: -6px;
+    }
+
+    /* Middle columns span full width + half gap on each side */
+    .bus-horizontal.mid {
+      left: -6px;
+      right: -6px;
+    }
+
+    /* Last column spans from left gap to center (50%) */
+    .bus-horizontal.last {
+      left: -6px;
+      right: 50%;
+    }
+
+    /* Vertical gold leg dropping from bus (20px) down to lead card */
+    .bus-vertical-drop {
+      position: absolute;
+      top: 20px;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      background: var(--gold-ledger);
+    }
+
+    /* Diamond junction node sitting at bus intersection */
+    .bus-diamond {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      line-height: 1;
+      color: var(--gold-bright);
+      background: var(--bg-obsidian);
+      padding: 0 2px;
+      text-shadow: 0 0 6px rgba(212, 175, 90, 0.6);
+    }
+
+    /* ==========================================================================
+       4. SEVEN HIGH COUNCIL DEPARTMENT LEADS
+       ========================================================================== */
+    .leads-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .lead-card {
+      padding: 10px 6px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-color: rgba(212, 175, 90, 0.55);
+    }
+
+    /* ==========================================================================
+       PURPLE VERTICAL STEMS TO DEPARTMENTS
+       ========================================================================== */
+    .purple-stems-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 12px;
+      height: 54px;
+    }
+
+    .purple-stem-col {
+      position: relative;
+      height: 100%;
+    }
+
+    .purple-stem-col::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      background: linear-gradient(180deg, var(--gold-ledger) 0%, var(--purple-stem) 35%, var(--purple-stem) 100%);
+    }
+
+    /* ==========================================================================
+       5. SIX DEPARTMENT & MEMBER JOB CARDS (7-COLUMN CSS GRID)
+       ========================================================================== */
+    .departments-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .dept-card {
+      padding: 8px 8px 14px;
+      min-height: 158px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .dept-card.war-chain {
+      grid-column: 1 / 3;
+    }
+
+    .dept-card.recruitment {
+      grid-column: 3 / 4;
+    }
+
+    .dept-card.organized-crimes {
+      grid-column: 4 / 5;
+    }
+
+    .dept-card.events {
+      grid-column: 5 / 6;
+    }
+
+    .dept-card.armory {
+      grid-column: 6 / 7;
+    }
+
+    .dept-card.data-payouts {
+      grid-column: 7 / 8;
+      border-style: dashed;
+      border-color: #6b588c;
+      background: rgba(15, 11, 24, 0.88);
+    }
+
+    .dept-pill {
+      width: 100%;
+      padding: 8px 6px;
+      text-align: center;
+      font-family: var(--font-gothic);
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      color: var(--gold-ledger);
+      background: var(--card-recess);
+      border: 1px solid rgba(63, 49, 89, 0.75);
+      border-radius: 8px;
+    }
+
+    .dept-card.data-payouts .dept-pill {
+      color: var(--text-silver);
+    }
+
+    .dept-content {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding-top: 10px;
+      text-align: center;
+    }
+
+    .officer-role-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--text-lavender);
+    }
+
+    .dashed-subtitle {
+      font-size: 11px;
+      font-style: italic;
+      font-weight: 600;
+      color: var(--crimson-note);
+      margin-bottom: 4px;
+    }
+
+    .dashed-desc-muted {
+      font-size: 11px;
+      color: var(--text-lavender);
+      line-height: 1.35;
+    }
+
+    .dashed-desc-bold {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-silver);
+      line-height: 1.35;
+    }
+
+    /* ==========================================================================
+       6. FOOTER LEGEND & CROWS OATH BANNER
+       ========================================================================== */
+    .chart-footer {
+      margin-top: 26px;
+      text-align: center;
+    }
+
+    .footer-rule {
+      width: 88%;
+      height: 1px;
+      margin: 0 auto 14px;
+      background: linear-gradient(90deg, transparent 0%, var(--border-violet) 50%, transparent 100%);
+    }
+
+    .footer-legend-line {
+      font-size: 12.5px;
+      color: var(--text-lavender);
+      line-height: 1.7;
+    }
+
+    .footer-legend-line strong {
+      color: var(--gold-ledger);
+      font-family: var(--font-gothic);
+      letter-spacing: 0.08em;
+    }
+
+    .legend-gap {
+      display: inline-block;
+      width: 24px;
+    }
+
+    .oath-banner {
+      margin-top: 16px;
+      padding: 10px 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: rgba(24, 17, 36, 0.78);
+      border: 1px solid rgba(212, 175, 90, 0.34);
+      border-radius: 999px;
+    }
+
+    .oath-text {
+      font-family: var(--font-gothic);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--text-silver);
+    }
+
+    .oath-text span {
+      color: var(--gold-ledger);
+    }
+
+    .mini-crow {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+  
+  </style>
+</head>
+<body>
+  <main class="chart-scroll">
+    <div id="chart-export-root" class="chart-box" data-mode="banner">
+
+      <!-- Inline SVG Subtle Moonlit Gothic Backdrop & Crow Silhouettes -->
+      <svg class="gothic-backdrop-svg" viewBox="0 0 1440 290" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+        <defs>
+          <radialGradient id="crowsMoonHalo" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#d8d2e3" stop-opacity="0.28"></stop>
+            <stop offset="42%" stop-color="#9b87bd" stop-opacity="0.12"></stop>
+            <stop offset="100%" stop-color="#0b0910" stop-opacity="0"></stop>
+          </radialGradient>
+          <linearGradient id="crowsSpireShade" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#1c142b" stop-opacity="0.65"></stop>
+            <stop offset="80%" stop-color="#0d0a14" stop-opacity="0.92"></stop>
+            <stop offset="100%" stop-color="#0b0910" stop-opacity="0"></stop>
+          </linearGradient>
+        </defs>
+
+        <!-- Veiled Full Moon -->
+        <circle cx="1010" cy="88" r="165" fill="url(#crowsMoonHalo)"></circle>
+        <circle cx="1010" cy="88" r="48" fill="#d8d2e3" fill-opacity="0.14"></circle>
+
+        <!-- Distant Gothic Cathedral Spires & Pine Silhouettes -->
+        <path d="M0,245 L55,245 L70,202 L85,245 L120,245 L138,190 L156,245 L210,245 L224,212 L238,245 L290,245 L300,175 L307,138 L314,175 L324,245 L350,245 L362,192 L374,245 L1065,245 L1078,204 L1092,245 L1130,245 L1141,172 L1148,134 L1155,172 L1166,245 L1192,245 L1204,190 L1216,245 L1265,245 L1282,198 L1298,245 L1340,245 L1356,205 L1372,245 L1440,245 L1440,290 L0,290 Z" fill="url(#crowsSpireShade)"></path>
+
+        <!-- Left Perched Crow Silhouette -->
+        <g fill="#08060c" opacity="0.92">
+          <path d="M-8,54 Q80,64 152,42 Q194,30 236,38 Q188,42 148,54 Q178,63 210,78 Q170,68 128,58 Q68,76 -8,72 Z"></path>
+          <path d="M122,45 C120,34 126,24 135,21 C139,19 144,20 147,23 L157,25 L148,29 C148,35 144,42 137,46 L141,58 L136,58 L132,48 L116,63 L111,61 L125,46 Z"></path>
+        </g>
+
+        <!-- Right Perched Crow Silhouette -->
+        <g fill="#08060c" opacity="0.92" transform="translate(1440, 0) scale(-1, 1)">
+          <path d="M-8,54 Q80,64 152,42 Q194,30 236,38 Q188,42 148,54 Q178,63 210,78 Q170,68 128,58 Q68,76 -8,72 Z"></path>
+          <path d="M122,45 C120,34 126,24 135,21 C139,19 144,20 147,23 L157,25 L148,29 C148,35 144,42 137,46 L141,58 L136,58 L132,48 L116,63 L111,61 L125,46 Z"></path>
+        </g>
+      </svg>
+
+      <!-- ====================================================================
+           1. GOTHIC HEADER & FACTION MOTTO
+           ==================================================================== -->
+      <header class="chart-header">
+        <div class="crest-title-row">
+          <svg class="crow-emblem" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <path d="M46 46L18 52M27 49C25 38 30 25 39 20C43 18 48 19 51 22L60 24L51 28C51 35 46 43 38 47L41 56M35 48L37 56M29 46L14 60L10 57L25 43" stroke="#9b87bd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="46" cy="24" r="1.8" fill="#d4af5a"></circle>
+          </svg>
+          <h1 class="faction-title">CROWS</h1>
+          <svg class="crow-emblem" viewBox="0 0 64 64" fill="none" aria-hidden="true" style="transform: scaleX(-1);">
+            <path d="M46 46L18 52M27 49C25 38 30 25 39 20C43 18 48 19 51 22L60 24L51 28C51 35 46 43 38 47L41 56M35 48L37 56M29 46L14 60L10 57L25 43" stroke="#9b87bd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="46" cy="24" r="1.8" fill="#d4af5a"></circle>
+          </svg>
+        </div>
+
+        <h2 class="chart-subtitle">LEADERSHIP STRUCTURE</h2>
+
+        <div class="filigree-divider" aria-hidden="true">
+          <div class="filigree-line"></div>
+          <div class="filigree-diamonds">
+            <span>◆</span>
+            <span class="center-diamond">◆</span>
+            <span>◆</span>
+          </div>
+          <div class="filigree-line"></div>
+        </div>
+
+        <p class="faction-motto">
+          “If you have to ask, <span>you weren't invited to the family.</span>”
+        </p>
+      </header>
+
+      <!-- ====================================================================
+           2. TOP LEADERSHIP TIER (LEADER, CO-LEADER & COUNCIL ADVISORS)
+           ==================================================================== -->
+      <section class="top-tier" aria-label="Supreme Command and Council Advisors">
+        <div class="command-stack">
+          <!-- LEADER: Ozi [232117] -->
+          <div class="gothic-card command-card">
+            <div class="role-heading">LEADER</div>
+            <a href="https://www.torn.com/232117" target="_blank" rel="noopener noreferrer" class="member-link" title="Open Ozi [232117] on Torn">
+              <img class="torn-sig" data-tier="leader" data-id="232117" data-name="Ozi" src="https://www.torn.com/sigs/16_232117.png" alt="Ozi [232117]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+              <span class="nameplate-fallback" style="display:none;">
+                <span class="np-name">Ozi</span>
+                <span class="np-id">[232117]</span>
+              </span>
+            </a>
+          </div>
+
+          <!-- Vertical gold connector line with ◆ node -->
+          <div class="gold-v-connector between-leaders" aria-hidden="true">
+            <span class="diamond-node">◆</span>
+          </div>
+
+          <!-- CO-LEADER: PinkyLifter [3224959] -->
+          <div class="gothic-card command-card">
+            <div class="role-heading">CO-LEADER</div>
+            <a href="https://www.torn.com/3224959" target="_blank" rel="noopener noreferrer" class="member-link" title="Open PinkyLifter [3224959] on Torn">
+              <img class="torn-sig" data-tier="leader" data-id="3224959" data-name="PinkyLifter" src="https://www.torn.com/sigs/16_3224959.png" alt="PinkyLifter [3224959]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+              <span class="nameplate-fallback" style="display:none;">
+                <span class="np-name">PinkyLifter</span>
+                <span class="np-id">[3224959]</span>
+              </span>
+            </a>
+          </div>
+
+          <!-- Vertical gold connector down to High Council bar -->
+          <div class="gold-v-connector to-high-council" aria-hidden="true">
+            <span class="diamond-node">◆</span>
+          </div>
+        </div>
+
+        <!-- Floating Right Card: COUNCIL ADVISORS -->
+        <div class="advisors-slot">
+          <div class="gothic-card advisors-card">
+            <div class="role-heading">COUNCIL ADVISORS</div>
+            <div class="advisors-rule"></div>
+            <div class="advisors-members">
+              <!-- scorw [3235172] -->
+              <a href="https://www.torn.com/3235172" target="_blank" rel="noopener noreferrer" class="member-link" title="Open scorw [3235172] on Torn">
+                <img class="torn-sig" data-tier="council" data-id="3235172" data-name="scorw" src="https://www.torn.com/sigs/29_3235172.png" alt="scorw [3235172]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+                <span class="nameplate-fallback" style="display:none;">
+                  <span class="np-name">scorw</span>
+                  <span class="np-id">[3235172]</span>
+                </span>
+              </a>
+
+              <!-- TheJacketMan [2631655] -->
+              <a href="https://www.torn.com/2631655" target="_blank" rel="noopener noreferrer" class="member-link" title="Open TheJacketMan [2631655] on Torn">
+                <img class="torn-sig" data-tier="council" data-id="2631655" data-name="TheJacketMan" src="https://www.torn.com/sigs/29_2631655.png" alt="TheJacketMan [2631655]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+                <span class="nameplate-fallback" style="display:none;">
+                  <span class="np-name">TheJacketMan</span>
+                  <span class="np-id">[2631655]</span>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Vertical gold line dropping down to the High Council bar -->
+          <div class="advisors-drop-line" aria-hidden="true">
+            <span class="diamond-node">◆</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           3. HIGH COUNCIL BAR
+           ==================================================================== -->
+      <section class="high-council-section" aria-label="High Council">
+        <div class="gothic-card high-council-bar">
+          <span class="hc-gem">◆</span>
+          <h3 class="hc-title">HIGH COUNCIL</h3>
+          <span class="hc-gem">◆</span>
+        </div>
+      </section>
+
+      <!-- Gold Horizontal Bus Bar with ◆ Nodes Branching into 7 Columns -->
+      <div class="gold-bus-grid" aria-hidden="true">
+        <div class="bus-col">
+          <div class="bus-horizontal first"></div>
+          <div class="bus-vertical-drop"></div>
+          <span class="bus-diamond">◆</span>
+        </div>
+        <div class="bus-col">
+          <div class="bus-horizontal mid"></div>
+          <div class="bus-vertical-drop"></div>
+          <span class="bus-diamond">◆</span>
+        </div>
+        <div class="bus-col">
+          <div class="bus-horizontal mid"></div>
+          <div class="bus-vertical-drop"></div>
+          <span class="bus-diamond">◆</span>
+        </div>
+        <div class="bus-col center-trunk">
+          <div class="bus-horizontal mid"></div>
+          <div class="bus-vertical-drop"></div>
+          <span class="bus-diamond">◆</span>
+        </div>
+        <div class="bus-col">
+          <div class="bus-horizontal mid"></div>
+          <div class="bus-vertical-drop"></div>
+          <span class="bus-diamond">◆</span>
+        </div>
+        <div class="bus-col">
+          <div class="bus-horizontal mid"></div>
+          <div class="bus-vertical-drop"></div>
+          <span class="bus-diamond">◆</span>
+        </div>
+        <div class="bus-col">
+          <div class="bus-horizontal last"></div>
+          <div class="bus-vertical-drop"></div>
+          <span class="bus-diamond">◆</span>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           4. SEVEN HIGH COUNCIL DEPARTMENT LEADS
+           ==================================================================== -->
+      <section class="leads-grid" aria-label="High Council Department Leads">
+        <!-- Col 1: Emylia [3605213] -->
+        <div class="gothic-card lead-card">
+          <a href="https://www.torn.com/3605213" target="_blank" rel="noopener noreferrer" class="member-link" title="Open Emylia [3605213] on Torn">
+            <img class="torn-sig" data-tier="council" data-id="3605213" data-name="Emylia" src="https://www.torn.com/sigs/29_3605213.png" alt="Emylia [3605213]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+            <span class="nameplate-fallback" style="display:none;">
+              <span class="np-name">Emylia</span>
+              <span class="np-id">[3605213]</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Col 2: WisDomSon [3691156] -->
+        <div class="gothic-card lead-card">
+          <a href="https://www.torn.com/3691156" target="_blank" rel="noopener noreferrer" class="member-link" title="Open WisDomSon [3691156] on Torn">
+            <img class="torn-sig" data-tier="council" data-id="3691156" data-name="WisDomSon" src="https://www.torn.com/sigs/29_3691156.png" alt="WisDomSon [3691156]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+            <span class="nameplate-fallback" style="display:none;">
+              <span class="np-name">WisDomSon</span>
+              <span class="np-id">[3691156]</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Col 3: Ostaf [2197235] -->
+        <div class="gothic-card lead-card">
+          <a href="https://www.torn.com/2197235" target="_blank" rel="noopener noreferrer" class="member-link" title="Open Ostaf [2197235] on Torn">
+            <img class="torn-sig" data-tier="council" data-id="2197235" data-name="Ostaf" src="https://www.torn.com/sigs/29_2197235.png" alt="Ostaf [2197235]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+            <span class="nameplate-fallback" style="display:none;">
+              <span class="np-name">Ostaf</span>
+              <span class="np-id">[2197235]</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Col 4: Elfy1220 [3496182] -->
+        <div class="gothic-card lead-card">
+          <a href="https://www.torn.com/3496182" target="_blank" rel="noopener noreferrer" class="member-link" title="Open Elfy1220 [3496182] on Torn">
+            <img class="torn-sig" data-tier="council" data-id="3496182" data-name="Elfy1220" src="https://www.torn.com/sigs/29_3496182.png" alt="Elfy1220 [3496182]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+            <span class="nameplate-fallback" style="display:none;">
+              <span class="np-name">Elfy1220</span>
+              <span class="np-id">[3496182]</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Col 5: Snyke [3219185] -->
+        <div class="gothic-card lead-card">
+          <a href="https://www.torn.com/3219185" target="_blank" rel="noopener noreferrer" class="member-link" title="Open Snyke [3219185] on Torn">
+            <img class="torn-sig" data-tier="council" data-id="3219185" data-name="Snyke" src="https://www.torn.com/sigs/29_3219185.png" alt="Snyke [3219185]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+            <span class="nameplate-fallback" style="display:none;">
+              <span class="np-name">Snyke</span>
+              <span class="np-id">[3219185]</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Col 6: OldChappy [3665612] -->
+        <div class="gothic-card lead-card">
+          <a href="https://www.torn.com/3665612" target="_blank" rel="noopener noreferrer" class="member-link" title="Open OldChappy [3665612] on Torn">
+            <img class="torn-sig" data-tier="council" data-id="3665612" data-name="OldChappy" src="https://www.torn.com/sigs/29_3665612.png" alt="OldChappy [3665612]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+            <span class="nameplate-fallback" style="display:none;">
+              <span class="np-name">OldChappy</span>
+              <span class="np-id">[3665612]</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Col 7: Mr_Crowley [2846190] -->
+        <div class="gothic-card lead-card">
+          <a href="https://www.torn.com/2846190" target="_blank" rel="noopener noreferrer" class="member-link" title="Open Mr_Crowley [2846190] on Torn">
+            <img class="torn-sig" data-tier="council" data-id="2846190" data-name="Mr_Crowley" src="https://www.torn.com/sigs/29_2846190.png" alt="Mr_Crowley [2846190]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+            <span class="nameplate-fallback" style="display:none;">
+              <span class="np-name">Mr_Crowley</span>
+              <span class="np-id">[2846190]</span>
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Purple Vertical Stems Connecting Leads to Departments -->
+      <div class="purple-stems-grid" aria-hidden="true">
+        <div class="purple-stem-col"></div>
+        <div class="purple-stem-col"></div>
+        <div class="purple-stem-col"></div>
+        <div class="purple-stem-col"></div>
+        <div class="purple-stem-col"></div>
+        <div class="purple-stem-col"></div>
+        <div class="purple-stem-col"></div>
+      </div>
+
+      <!-- ====================================================================
+           5. SIX DEPARTMENT & MEMBER JOB CARDS (7-COLUMN CSS GRID)
+           ==================================================================== -->
+      <section class="departments-grid" aria-label="Departments and Member Roles">
+        <!-- Col 1–2: WAR & CHAIN -->
+        <div class="gothic-card dept-card war-chain">
+          <div class="dept-pill">WAR &amp; CHAIN</div>
+          <div class="dept-content"></div>
+        </div>
+
+        <!-- Col 3: RECRUITMENT & DEV -->
+        <div class="gothic-card dept-card recruitment">
+          <div class="dept-pill">RECRUITMENT &amp; DEV</div>
+          <div class="dept-content"></div>
+        </div>
+
+        <!-- Col 4: ORGANIZED CRIMES -> Crime Officer: Pavlov [4320550] -->
+        <div class="gothic-card dept-card organized-crimes">
+          <div class="dept-pill">ORGANIZED CRIMES</div>
+          <div class="dept-content">
+            <div class="officer-role-label">Crime Officer</div>
+            <a href="https://www.torn.com/4320550" target="_blank" rel="noopener noreferrer" class="member-link" title="Open Pavlov [4320550] on Torn">
+              <img class="torn-sig" data-tier="council" data-id="4320550" data-name="Pavlov" src="https://www.torn.com/sigs/29_4320550.png" alt="Pavlov [4320550]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+              <span class="nameplate-fallback" style="display:none;">
+                <span class="np-name">Pavlov</span>
+                <span class="np-id">[4320550]</span>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 5: EVENTS -> Event Host: Gr8One [3940815] -->
+        <div class="gothic-card dept-card events">
+          <div class="dept-pill">EVENTS</div>
+          <div class="dept-content">
+            <div class="officer-role-label">Event Host</div>
+            <a href="https://www.torn.com/3940815" target="_blank" rel="noopener noreferrer" class="member-link" title="Open Gr8One [3940815] on Torn">
+              <img class="torn-sig" data-tier="council" data-id="3940815" data-name="Gr8One" src="https://www.torn.com/sigs/29_3940815.png" alt="Gr8One [3940815]" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+              <span class="nameplate-fallback" style="display:none;">
+                <span class="np-name">Gr8One</span>
+                <span class="np-id">[3940815]</span>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 6: ARMORY -->
+        <div class="gothic-card dept-card armory">
+          <div class="dept-pill">ARMORY</div>
+          <div class="dept-content"></div>
+        </div>
+
+        <!-- Col 7: DATA & PAYOUTS (Dashed Border Card) -->
+        <div class="gothic-card dept-card data-payouts">
+          <div class="dept-pill">DATA &amp; PAYOUTS</div>
+          <div class="dept-content">
+            <div class="dashed-subtitle">not a department</div>
+            <div class="dashed-desc-muted">payout sheets and</div>
+            <div class="dashed-desc-bold">faction tracking</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           6. FOOTER LEGEND & OATH BANNER
+           ==================================================================== -->
+      <footer class="chart-footer">
+        <div class="footer-rule"></div>
+        <p class="footer-legend-line">
+          <strong>HIGH COUNCIL</strong> = Leader, Co-Leader and all department leads.
+        </p>
+        <p class="footer-legend-line">
+          Dashed cards are member jobs, not departments.
+          <span class="legend-gap"></span>
+          Council Advisors hold no department.
+        </p>
+
+        <div class="oath-banner">
+          <svg class="mini-crow" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M23 24L9 27M13 25C12 19 15 12 20 10C22 9 24 9.5 26 11L30 12L26 14C26 18 23 22 19 24L21 29M17 24L18 29M14 23L7 30L5 28L12 21" stroke="#9b87bd" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          <p class="oath-text">
+            ONE FLOCK. ONE FAMILY. ONE STANDARD. <span>— FROM THE HIGH PERCH, WE SEE ALL.</span>
+          </p>
+          <svg class="mini-crow" viewBox="0 0 32 32" fill="none" aria-hidden="true" style="transform: scaleX(-1);">
+            <path d="M23 24L9 27M13 25C12 19 15 12 20 10C22 9 24 9.5 26 11L30 12L26 14C26 18 23 22 19 24L21 29M17 24L18 29M14 23L7 30L5 28L12 21" stroke="#9b87bd" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+</body>
+</html>
